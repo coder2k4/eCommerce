@@ -38,7 +38,7 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
-    products.apps.ProductsConfig
+    'products.apps.ProductsConfig'
 ]
 
 INSTALLED_APPS = [
