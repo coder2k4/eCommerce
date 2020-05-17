@@ -38,12 +38,12 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
-
+    products.apps.ProductsConfig
 ]
 
 INSTALLED_APPS = [
 
-                 ] + PROJECT_APPS + DJANGO_APPS
+] + PROJECT_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
