@@ -4,6 +4,7 @@ import random
 from django.db import models
 
 # Create your models here.
+from django.db.models import Q
 from django.db.models.signals import pre_save
 from django.urls import reverse
 
@@ -28,18 +29,41 @@ def upload_image_path(instance, filename):
     )
 
 
-class ProductManager(models.Model):
+class ProductQuerySet(models.query.QuerySet):
+    def active(self):
+        return self.filter(active=True)
+
+    def featured(self):
+        return self.filter(featured=True, active=True)
+
+    def search(self, query):
+        lookup = (Q(title__icontains=query)
+                  | Q(description__icontains=query)
+                  | Q(tags__title__icontains=query))
+        return self.filter(lookup).distinct()  # Удаляет дубликаты
+
+
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return ProductQuerySet(self.model, using=self._db)
+
     def all(self):
         return self.get_queryset().filter(active=True)
 
+    def active(self):
+        return self.get_queryset().active()
+
     def featured(self):
-        return self.get_queryset().filter(featured=True)
+        return self.get_queryset().featured()
 
     def get_by_id(self, id):
         qs = self.get_queryset().filter(id=id)  # Product.objects == self.get_queryset()
         if qs.count() == 1:
             return qs.first()
         return None
+
+    def search(self, query):
+        return self.get_queryset().active().search(query)
 
 
 class Product(models.Model):
@@ -50,7 +74,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     featured = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
-    timestamp       = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = ProductManager()
 

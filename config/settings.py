@@ -38,7 +38,9 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
-    'products.apps.ProductsConfig'
+    'products.apps.ProductsConfig',
+    'search.apps.SearchConfig',
+    'tags.apps.TagsConfig',
 ]
 
 INSTALLED_APPS = [
