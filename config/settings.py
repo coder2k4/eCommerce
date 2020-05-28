@@ -41,11 +41,12 @@ PROJECT_APPS = [
     'products.apps.ProductsConfig',
     'search.apps.SearchConfig',
     'tags.apps.TagsConfig',
+    'cart.apps.CartConfig'
 ]
 
 INSTALLED_APPS = [
 
-] + PROJECT_APPS + DJANGO_APPS
+                 ] + PROJECT_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
