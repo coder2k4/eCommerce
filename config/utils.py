@@ -8,6 +8,16 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+# Генерируем уникальную строку
+def unique_order_id_generator(instance):
+    order_id = random_string_generator(6).upper()
+    Klass = instance.__class__
+    qs_exists = Klass.objects.filter(order_id=order_id).exists()
+    if qs_exists:
+        return unique_order_id_generator(instance)
+    return order_id
+
+
 def unique_slug_generator(instance, new_slug=None):
     """
     This is for a Django project and it assumes your instance

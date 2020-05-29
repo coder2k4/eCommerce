@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.db.models.signals import pre_save
 from django.urls import reverse
 
-from products.utils import unique_slug_generator
+from config.utils import unique_slug_generator
 
 
 def get_filename_ext(filepath):
