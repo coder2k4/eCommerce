@@ -41,7 +41,8 @@ PROJECT_APPS = [
     'products.apps.ProductsConfig',
     'search.apps.SearchConfig',
     'tags.apps.TagsConfig',
-    'cart.apps.CartConfig'
+    'cart.apps.CartConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 INSTALLED_APPS = [
