@@ -43,6 +43,9 @@ PROJECT_APPS = [
     'tags.apps.TagsConfig',
     'cart.apps.CartConfig',
     'orders.apps.OrdersConfig',
+    'accounts.apps.AccountsConfig',
+    'billing.apps.BillingConfig',
+    'addresses.apps.AddressesConfig',
 ]
 
 INSTALLED_APPS = [
@@ -59,6 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGOUT_REDIRECT_URL = '/login/'
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -126,7 +130,10 @@ USE_TZ = True
 
 # Static settings
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 # Media settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

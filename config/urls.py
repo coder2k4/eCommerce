@@ -15,10 +15,28 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.views import LogoutView
+
+from accounts.views import login_page, guest_register_view, register_page
+from addresses.views import checkout_address_create_view, checkout_address_reuse_view
+from django.conf import settings
+from config.view import home_page
+from django.conf.urls.static import static
 
 urlpatterns = [
+    path('', home_page, name='home'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls', namespace='products')),
     path('search/', include('search.urls', namespace='search')),
-    path('cart/', include('cart.urls', namespace='cart'))
+    path('cart/', include('cart.urls', namespace='cart')),
+    path('login/', login_page, name='login'),
+    path('register/guest/', guest_register_view, name='guest_register'),
+    path('register/', register_page, name='register'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('checkout/address/create/', checkout_address_create_view, name='checkout_address_create'),
+    path('checkout/address/reuse/', checkout_address_reuse_view, name='checkout_address_reuse'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
