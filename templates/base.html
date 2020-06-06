@@ -16,7 +16,89 @@
 </div>
 
 
-
 {% include 'base/js.html' %}
+
+
+<script>
+
+    // Ajax отправки в корзину товаров и обработка формы :)
+
+    $(document).ready(function () {
+        const $productForm = $(".form-product-ajax")
+        // Перехватываем событие submit
+        $productForm.submit(function (e) {
+            // Отменяем стандартное поведение
+            e.preventDefault()
+            const thisForm = $(this)
+            const formData = thisForm.serialize()
+            const httpMethod = thisForm.attr("method")
+            //const actionEndPoint = thisForm.attr("action")
+            const actionEndPoint = thisForm.attr("data-endpoint")
+
+            $.ajax({
+                url: actionEndPoint,
+                method: httpMethod,
+                data: formData,
+                success: function (data) {
+                    {#console.log("success")#}
+                    {#console.log(data)#}
+                    {#console.log(data.added)#}
+                    {#console.log(data.removed)#}
+
+                    const $submitSpan = thisForm.find('.submit-span')
+                    const $navBarCartCount = $('.navbar-cart-count')
+
+                    if (data.added) {
+                        $submitSpan.html("In cart <button type='submit' class='btn btn-link'>Remove?</button>")
+                    } else {
+                        $submitSpan.html("<button type='submit' class='btn btn-success'>Add to cart</button>")
+                    }
+                    // Обновляем число рядом с корзиной
+                    $navBarCartCount.text(data.cartItemsCount)
+
+
+                    // Если в пути есть слово cart (то мы на странице корзины)
+                    if (window.location.href.indexOf("cart") !== -1) {
+                        refreshCart()
+                    }
+                },
+                error: function (errorData) {
+                    console.log(errorData)
+                    console.log("error")
+                }
+            })
+        })
+
+
+        function refreshCart() {
+            //console.log("in cart")
+            const $cartTable = $(".cart-table")
+            const $cartBody = $(".cart-body")
+
+            const updateCartMethod = "GET"
+            const updateCartUrl = "/api/cart/"
+            let data = {}
+
+            $.ajax({
+                url: updateCartUrl,
+                method: updateCartMethod,
+                data: data,
+                success: function (data) {
+                    console.log("success")
+                    console.log("data")
+                },
+                error: function (data) {
+                    console.log("error")
+                    console.log("data")
+                }
+            })
+
+            $cartBody.html("<h1>CLEAR</h1>")
+
+
+        }
+    })
+</script>
+
 </body>
 </html>
