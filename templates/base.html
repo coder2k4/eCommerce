@@ -97,14 +97,14 @@
                         $productsRows.html(" ")
 
                         i = data.products.length
-                        $.each(data.products, function(index, value){
+                        $.each(data.products, function (index, value) {
                             console.log(value)
                             const newCartItemRemove = $hiddenCartItemRemoveForm.clone()
                             newCartItemRemove.css("display", "block")
                             // newCartItemRemove.removeClass("hidden-class")
                             newCartItemRemove.find(".cart-item-product-id").val(value.id)
                             $cartBody.prepend("<tr><th scope=\"row\">" + i + "</th><td><a href='" + value.url + "'>" + value.name + "</a>" + newCartItemRemove.html() + "</td><td>" + value.price + "</td></tr>")
-                            i --
+                            i--
                         })
 
 
