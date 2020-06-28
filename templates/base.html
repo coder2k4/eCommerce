@@ -24,6 +24,58 @@
     // Ajax отправки в корзину товаров и обработка формы :)
 
     $(document).ready(function () {
+
+        /**
+         *  Автоматический поиск, при завершении набора текста
+         */
+        function autoSearch() {
+            const $searchForm = $(".search-form")
+            const $searchInput = $searchForm.find("[name='q']")
+            const $searchButton = $searchForm.find("[type='submit']")
+            const typingInterval = 1000;
+            // Заверншение таймера
+            let typingTimer;
+
+
+            /**
+             * Событие на прекращение наблора текста.
+             * Производит редирект на страницу поиска с параметром q
+             */
+            $searchInput.keyup(e => {
+                typingTimer = setTimeout(performSearch, typingInterval)
+            })
+
+            /**
+             * Событие очищает typingTimer и предотвращает редирект на страницу,
+             * если пользователь все еще набирает текст
+             */
+            $searchInput.keydown(e => {
+                clearTimeout(typingTimer);
+            })
+
+            // Клик по кнопке поиска
+            $searchButton.click(doSearch)
+
+
+            // Изменем стиль
+            function doSearch() {
+                $searchButton.addClass("disabled")
+                $searchButton.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
+            }
+
+
+
+            function performSearch() {
+                doSearch()
+                const query = $searchInput.val()
+                window.location.href = `/search/?q=${query}`
+            }
+
+        }
+
+        autoSearch()
+
+
         const $productForm = $(".form-product-ajax")
         // Перехватываем событие submit
         $productForm.submit(function (e) {
